@@ -1,1 +1,1 @@
-../../../../../Chute-SDK-v2-iOS/Chute-SDK/API/GCClient.h
+../../Chute-SDK/Chute-SDK/API/GCClient.h

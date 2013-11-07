@@ -1,1 +1,1 @@
-../../../../../Chute-SDK-v2-iOS/Chute-SDK/Models/GCApiLimits.h
+../../Chute-SDK/Chute-SDK/Models/GCApiLimits.h

@@ -1,1 +1,1 @@
-../../../../../Chute-SDK-v2-iOS/Chute-SDK/Models/GCFlag.h
+../../Chute-SDK/Chute-SDK/Models/GCFlag.h

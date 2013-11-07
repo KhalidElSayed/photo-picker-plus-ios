@@ -1,1 +1,1 @@
-../../../../../Chute-SDK-v2-iOS/Chute-SDK/Util/GCLogFormatter.h
+../../Chute-SDK/Chute-SDK/Util/GCLogFormatter.h

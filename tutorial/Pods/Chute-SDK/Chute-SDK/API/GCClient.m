@@ -14,6 +14,7 @@
 #import "DCKeyValueObjectMapping.h"
 #import "GCUploads.h"
 #import "Lockbox.h"
+#import "GCLog.h"
 
 NSString * const kGCClientGET = @"GET";
 NSString * const kGCClientPOST = @"POST";
@@ -33,7 +34,8 @@ static dispatch_queue_t serialQueue;
 
 @implementation GCClient
 
-+ (GCClient *)sharedClient {
++ (instancetype)sharedClient
+{
     static GCClient *_sharedClient = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -46,7 +48,8 @@ static dispatch_queue_t serialQueue;
     return _sharedClient;
 }
 
-- (id)initWithBaseURL:(NSURL *)url {
+- (id)initWithBaseURL:(NSURL *)url
+{
     
 /*
     NSData *data = [[NSUserDefaults standardUserDefaults] objectForKey:kGCClient];
@@ -118,8 +121,9 @@ static dispatch_queue_t serialQueue;
         NSRange rangeYahoo = [[cookie domain] rangeOfString:@"yahoo"];
         NSRange rangeMicrosoft = [[cookie domain] rangeOfString:@"live"];
         NSRange rangeInstagram = [[cookie domain] rangeOfString:@"instagram"];
+        NSRange rangeTwitter = [[cookie domain] rangeOfString:@"twitter"];
         
-        if(rangeDropBox.location == NSNotFound || rangeFacebook.location == NSNotFound || rangeGoogle.location == NSNotFound || rangeChute.location == NSNotFound || rangeFlick.location == NSNotFound || rangeYahoo.location == NSNotFound || rangeMicrosoft.location == NSNotFound || rangeInstagram.location == NSNotFound)
+        if(rangeDropBox.location == NSNotFound || rangeFacebook.location == NSNotFound || rangeGoogle.location == NSNotFound || rangeChute.location == NSNotFound || rangeFlick.location == NSNotFound || rangeYahoo.location == NSNotFound || rangeMicrosoft.location == NSNotFound || rangeInstagram.location == NSNotFound || rangeTwitter.location == NSNotFound)
             
             [storage deleteCookie:cookie];
     }
@@ -152,10 +156,11 @@ static dispatch_queue_t serialQueue;
     
     AFJSONRequestOperation *operation = [AFJSONRequestOperation JSONRequestOperationWithRequest:request success:^(NSURLRequest *request, NSHTTPURLResponse *response, id JSON) {
      
+        GCLogVerbose(@"URL: %@", [[request URL] absoluteString]);
         [self parseJSON:JSON withFactoryClass:factoryClass success:success];
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error, id JSON) {
-        NSLog(@"Failure: %@", JSON);
+        GCLogWarning(@"Error: %@ \n\tJSON: %@", [error localizedDescription], JSON);
         
         failure(error);
         

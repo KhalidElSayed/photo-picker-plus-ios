@@ -1,1 +1,1 @@
-../../../../../Chute-SDK-v2-iOS/Chute-SDK/Configuration/GCConfigurationFile.h
+../../Chute-SDK/Chute-SDK/Configuration/GCConfigurationFile.h

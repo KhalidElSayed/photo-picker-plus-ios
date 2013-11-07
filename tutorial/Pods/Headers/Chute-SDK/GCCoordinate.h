@@ -1,1 +1,1 @@
-../../../../../Chute-SDK-v2-iOS/Chute-SDK/Models/GCCoordinate.h
+../../Chute-SDK/Chute-SDK/Models/GCCoordinate.h

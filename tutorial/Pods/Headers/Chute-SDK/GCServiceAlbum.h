@@ -1,1 +1,1 @@
-../../../../../Chute-SDK-v2-iOS/Chute-SDK/API/Services/GCServiceAlbum.h
+../../Chute-SDK/Chute-SDK/API/Services/GCServiceAlbum.h

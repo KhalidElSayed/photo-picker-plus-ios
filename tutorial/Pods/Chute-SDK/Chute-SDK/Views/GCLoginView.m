@@ -13,10 +13,11 @@
 #import "AFJSONRequestOperation.h"
 #import "GCClient.h"
 #import "GCOAuth2Client.h"
+#import "GCLog.h"
 
 @implementation GCLoginView
 
-@synthesize webView, oauth2Client, loginType, success, failure;
+@synthesize webView, loginType, success, failure;
 
 - (id)initWithFrame:(CGRect)frame inParentView:(UIView *)parentView
 {
@@ -33,38 +34,37 @@
     return self;
 }
 
-+ (void)showOAuth2Client:(GCOAuth2Client *)_oauth2Client withLoginType:(GCLoginType)_loginType success:(void (^)(void))_success failure:(void (^)(NSError *))_failure
++ (void)showLoginType:(GCLoginType)_loginType success:(void (^)(void))_success failure:(void (^)(NSError *))_failure
 {
     UIWindow *window = [[[UIApplication sharedApplication] delegate] window];
-    [self showInView:window oauth2Client:_oauth2Client withLoginType:_loginType success:_success failure:_failure];
+    [self showInView:window withLoginType:_loginType success:_success failure:_failure];
 }
 
-+ (void)showInView:(UIView *)_view oauth2Client:(GCOAuth2Client *)_oauth2Client withLoginType:(GCLoginType)_loginType
++ (void)showInView:(UIView *)_view withLoginType:(GCLoginType)_loginType
 {
         
-    [self showInView:_view fromStartPoint:_view.layer.position oauth2Client:_oauth2Client withLoginType:_loginType success:nil failure:nil];
+    [self showInView:_view fromStartPoint:_view.layer.position withLoginType:_loginType success:nil failure:nil];
 }
 
-+ (void)showInView:(UIView *)_view fromStartPoint:(CGPoint)_startPoint oauth2Client:(GCOAuth2Client *)_oauth2Client withLoginType:(GCLoginType)_loginType
++ (void)showInView:(UIView *)_view fromStartPoint:(CGPoint)_startPoint withLoginType:(GCLoginType)_loginType
 {
     
-    [self showInView:_view fromStartPoint:_startPoint oauth2Client:_oauth2Client withLoginType:_loginType success:nil failure:nil];
+    [self showInView:_view fromStartPoint:_startPoint withLoginType:_loginType success:nil failure:nil];
 
 }
 
-+ (void)showInView:(UIView *)_view oauth2Client:(GCOAuth2Client *)_oauth2Client withLoginType:(GCLoginType)_loginType success:(void (^)(void))_success failure:(void (^)(NSError *))_failure
++ (void)showInView:(UIView *)_view withLoginType:(GCLoginType)_loginType success:(void (^)(void))_success failure:(void (^)(NSError *))_failure
 {
     
-    [self showInView:_view fromStartPoint:_view.layer.position oauth2Client:_oauth2Client withLoginType:_loginType success:_success failure:_failure];
+    [self showInView:_view fromStartPoint:_view.layer.position withLoginType:_loginType success:_success failure:_failure];
 }
 
-+ (void) showInView:(UIView *)_view fromStartPoint:(CGPoint)_startPoint oauth2Client:(GCOAuth2Client *)_oauth2Client withLoginType:(GCLoginType)_loginType success:(void (^)(void))_success failure:(void (^)(NSError *))_failure {
++ (void) showInView:(UIView *)_view fromStartPoint:(CGPoint)_startPoint withLoginType:(GCLoginType)_loginType success:(void (^)(void))_success failure:(void (^)(NSError *))_failure {
     
     CGRect popupFrame = [self popupFrameForView:_view withStartPoint:_startPoint];
     
     GCLoginView *popup = [[GCLoginView alloc] initWithFrame:popupFrame inParentView:_view];
     
-    popup.oauth2Client = _oauth2Client;
     popup.loginType = _loginType;
     popup.success = _success;
     popup.failure = _failure;
@@ -72,27 +72,10 @@
     [_view addSubview:popup];
     
     [popup showPopupWithCompletition:^{
-        [popup.webView loadRequest:[popup.oauth2Client requestAccessForLoginType:_loginType]];
+        [popup.webView loadRequest:[[GCOAuth2Client sharedClient] requestAccessForLoginType:_loginType]];
     }];
     
 }
-
-/*
-+ (void)showInView:(UIView *)view {
-    [self showInView:view fromStartPoint:view.layer.position];
-}
-
-+ (void) showInView:(UIView *)_view fromStartPoint:(CGPoint)_startPoint {
-
-    CGRect popupFrame = [self popupFrameForView:_view withStartPoint:_startPoint];
-    
-    GCLoginView2 *popup = [[GCLoginView2 alloc] initWithFrame:popupFrame];
-    
-    [_view addSubview:popup];
-    
-    [popup showPopup];
-}
-*/
 
 - (void)layoutSubviews {
 	[super layoutSubviews];
@@ -118,7 +101,7 @@
         NSString *_code = [[NSDictionary dictionaryWithFormEncodedString:[[request URL] query]] objectForKey:@"code"];
     
     if (_code && [_code length] > 0) {
-        [self.oauth2Client verifyAuthorizationWithAccessCode:_code success:^{
+        [[GCOAuth2Client sharedClient] verifyAuthorizationWithAccessCode:_code success:^{
             [self closePopupWithCompletition:^{
                 if (success)
                     success();
@@ -132,6 +115,14 @@
         return NO;
     }
  }
+ else if ([[[request URL] absoluteString] isEqualToString:@"http://getchute.com/v2/oauth/failure"]) {
+     
+     GCLogWarning(@"The user canceled the approval of the Chute App.");
+     if (failure) {
+         failure([NSError errorWithDomain:@"Chute" code:400 userInfo:nil]);
+     }
+     
+    }
     return YES;
 }
 
@@ -161,7 +152,7 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     if ([[alertView buttonTitleAtIndex:buttonIndex] isEqualToString:@"Reload"])
-        [self.webView loadRequest:[self.oauth2Client requestAccessForLoginType:self.loginType]];
+        [self.webView loadRequest:[[GCOAuth2Client sharedClient] requestAccessForLoginType:self.loginType]];
 }
 
 

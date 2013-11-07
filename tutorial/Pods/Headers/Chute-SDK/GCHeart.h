@@ -1,1 +1,1 @@
-../../../../../Chute-SDK-v2-iOS/Chute-SDK/Models/GCHeart.h
+../../Chute-SDK/Chute-SDK/Models/GCHeart.h

@@ -10,6 +10,6 @@
 
 @implementation GCUser
 
-@synthesize id, self, name, username, avatar;
+@synthesize id, self, name, username, avatar, profile, email, status, createdAt, updatedAt;
 
 @end

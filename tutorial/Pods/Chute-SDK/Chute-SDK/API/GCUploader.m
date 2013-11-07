@@ -19,6 +19,7 @@
 #import "GCAsset.h"
 #import "GCServiceAsset.h"
 #import "GCImageData.h"
+#import "GCLog.h"
 
 static NSString * const kGCFiles = @"files";
 static NSString * const kGCAlbums = @"albums";
@@ -130,7 +131,7 @@ static dispatch_queue_t serialQueue;
             }];
         
         } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-            NSLog([error localizedDescription]);
+            GCLogWarning([error localizedDescription]);
         }];
         
         [operations addObject:operation];

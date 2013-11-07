@@ -18,7 +18,7 @@ extern NSString * const kGCClientDELETE;
 
 @interface GCClient : AFHTTPClient
 
-+ (GCClient *)sharedClient;
++ (instancetype)sharedClient;
 
 - (BOOL)isLoggedIn;
 - (void)clearCookiesForChute;

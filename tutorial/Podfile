@@ -1,4 +1,4 @@
 platform :ios, '6.0'
 
-pod 'Chute-SDK', '2.0.5',
+pod 'Chute-SDK', '2.0.5'
 # pod 'Chute-SDK', :path => '../../Chute-SDK-v2-iOS/'

@@ -7,6 +7,7 @@
 //
 
 #import "GCFileManager.h"
+#import "GCLog.h"
 
 @implementation GCFileManager
 
@@ -22,7 +23,7 @@
             return dataPath;
         else
         {
-            NSLog(@"[%@] <KXLog> ERROR: attempting to write create GCTempDirectory directory", [self class]);
+            GCLogError(@"Attempting to write create GCTempDirectory directory");
             NSAssert( FALSE, @"Failed to create directory maybe out of disk space?");
             return nil;
         }
@@ -60,7 +61,7 @@
         [fileManager removeItemAtPath:obj error:&error];
         
         if (error) {
-            NSLog(@"<KXLog> ERROR: %@ \n Path:%@", [error localizedDescription], obj);
+            GCLogWarning(@"ERROR: %@ \n\tPath: %@", [error localizedDescription], obj);
         }
         
     }];

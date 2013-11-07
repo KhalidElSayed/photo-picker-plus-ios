@@ -1,1 +1,1 @@
-../../../../../Chute-SDK-v2-iOS/Chute-SDK/Util/GCLog.h
+../../Chute-SDK/Chute-SDK/Util/GCLog.h

@@ -34,12 +34,9 @@ extern NSString * const kGCLoginTypes[];
 
 @property (strong, nonatomic) NSArray *gcServices;
 
-+ (instancetype)clientWithClientID:(NSString *)_clientID clientSecret:(NSString *)_clientSecret;
-+ (instancetype)clientWithClientID:(NSString *)_clientID clientSecret:(NSString *)_clientSecret redirectURI:(NSString *)_redirectURI;
-+ (instancetype)clientWithClientID:(NSString *)_clientID clientSecret:(NSString *)_clientSecret scope:(NSString *)_scope;
-+ (instancetype)clientWithClientID:(NSString *)_clientID clientSecret:(NSString *)_clientSecret redirectURI:(NSString *)_redirectURI scope:(NSString *)_scope;
++ (instancetype)sharedClient;
 
 - (NSURLRequest *)requestAccessForLoginType:(GCLoginType)loginType;
 - (void)verifyAuthorizationWithAccessCode:(NSString *)code success:(void(^)(void))success failure:(void(^)(NSError *error))failure;
-
+- (void)clearCookiesForLoginType:(GCLoginType)loginType;
 @end

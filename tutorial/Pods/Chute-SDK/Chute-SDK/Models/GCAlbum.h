@@ -13,6 +13,7 @@
 @interface GCAlbum : NSObject
 
 @property (strong, nonatomic) NSNumber  *id;
+@property (strong, nonatomic) NSNumber  *parentID;
 @property (strong, nonatomic) GCLinks   *links;
 @property (strong, nonatomic) GCCounter *counters;
 @property (strong, nonatomic) NSString  *shortcut;
@@ -23,12 +24,22 @@
 @property (strong, nonatomic) NSDate    *createdAt;
 @property (strong, nonatomic) NSDate    *updatedAt;
 @property (strong, nonatomic) NSString  *description;
+@property (strong, nonatomic) GCAsset   *coverAsset;
+@property (strong, nonatomic) NSNumber  *imagesCount;
+@property (strong, nonatomic) GCAsset   *asset;
+
 
 + (void)getAllAlbumsWithSuccess:(void(^)(GCResponseStatus *responseStatus, NSArray *albums, GCPagination *pagination))success failure:(void(^)(NSError *error))failure;
+
++ (void)getAllAlbumsWithCoverAssetWithSuccess:(void(^)(GCResponseStatus *responseStatus, NSArray *albums, GCPagination *pagination))success failure:(void(^)(NSError *error))failure;
 
 - (void)getAlbumWithSuccess:(void(^)(GCResponseStatus *responseStatus, GCAlbum *album))success failure:(void(^)(NSError *error))failure;
 
 + (void)createAlbumWithName:(NSString *)name moderateMedia:(BOOL)moderateMedia moderateComments:(BOOL)moderateComments success:(void (^)(GCResponseStatus *responseStatus, GCAlbum *album))success failure:(void (^)(NSError *error))failure;
+
++ (void)createAlbumWithName:(NSString *)name withCoverAssetWithID:(NSNumber *)coverAssetID moderateMedia:(BOOL)moderateMedia moderateComments:(BOOL)moderateComments success:(void (^)(GCResponseStatus *responseStatus, GCAlbum *album))success failure:(void (^)(NSError *error))failure;
+
+- (void)updateAlbumWithName:(NSString *)_name coverAssetID:(NSNumber *)coverAssetID moderateMedia:(BOOL)_moderateMedia moderateComments:(BOOL)_moderateComments success:(void (^)(GCResponseStatus *responseStatus, GCAlbum *album))success failure:(void (^)(NSError *error))failure;
 
 - (void)updateAlbumWithName:(NSString *)name moderateMedia:(BOOL)moderateMedia moderateComments:(BOOL)moderateComments success:(void (^)(GCResponseStatus *responseStatus, GCAlbum *album))success failure:(void (^)(NSError *error))failure;
 
@@ -44,5 +55,10 @@
 
 - (void)importAssetsFromURLs:(NSArray *)urls success:(void(^)(GCResponseStatus *responseStatus, NSArray *assets, GCPagination *pagination))success failure:(void(^)(NSError *error))failure;
 
+- (void)moveAssetWithID:(NSNumber *)assetID toAlbumWithID:(NSNumber *)destinationAlbumID success:(void(^)(GCResponseStatus *responseStatus, GCAsset *asset))success failure:(void(^)(NSError *error))failure;
+
+- (void)copyAssetWithID:(NSNumber *)assetID toAlbumWithID:(NSNumber *)destinationAlbumID success:(void(^)(GCResponseStatus *responseStatus, GCAsset *asset))success failure:(void(^)(NSError *error))failure;
+
++ (void)listAllAlbumsWithinWithSuccess:(void(^)(GCResponseStatus *responseStatus, NSArray *listOfAlbums))success failure:(void(^)(NSError *error))failure;
 
 @end

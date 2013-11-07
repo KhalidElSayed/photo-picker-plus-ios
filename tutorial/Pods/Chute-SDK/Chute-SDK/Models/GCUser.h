@@ -17,5 +17,10 @@
 @property (strong, nonatomic) NSString  *name;
 @property (strong, nonatomic) NSString  *username;
 @property (strong, nonatomic) NSString  *avatar;
+@property (strong, nonatomic) NSString  *profile;
+@property (strong, nonatomic) NSString  *email;
+@property (strong, nonatomic) NSString  *status;
+@property (strong, nonatomic) NSDate    *createdAt;
+@property (strong, nonatomic) NSDate    *updatedAt;
 
 @end
